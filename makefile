@@ -10,3 +10,6 @@ start_db:
 stop_db:
 	docker stop db
 	docker rm db
+
+connect_db:
+	psql 'postgres://stats:password123@localhost/circle_stats'
