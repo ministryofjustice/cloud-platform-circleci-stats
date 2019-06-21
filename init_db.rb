@@ -1,16 +1,10 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-require 'pg'
+require './lib/db'
 
-begin
-  conn = PG.connect(
-    host:      'localhost',
-    dbname:    'circle_stats',
-    user:      'stats',
-    password:  'password123',
-  )
-  sql = <<~SQL
+
+sql = <<~SQL
   DROP TABLE IF EXISTS builds;
   CREATE TABLE builds(
     number INTEGER PRIMARY KEY,
@@ -20,7 +14,10 @@ begin
     vcs_url VARCHAR(255),
     committer_email VARCHAR(255)
   )
-  SQL
+SQL
+
+begin
+  conn = Db::connection
   conn.exec sql
 rescue PG::Error => e
   puts e.message
