@@ -69,6 +69,14 @@ def insert_build(conn, job)
   conn.exec sql
 end
 
+def prune_database(conn)
+  six_months_ago = Time.now.to_i - (180 * 24 * 3600)
+  sql = "DELETE FROM builds WHERE queued_at < #{six_months_ago}"
+  conn.exec sql
+end
+
+############################################################
+
 url = API_URL + '&circle-token=' + ENV.fetch('API_TOKEN')
 json = open(url).read
 jobs = JSON.parse(json)
@@ -85,6 +93,8 @@ begin
       # we just ignore these errors
     end
   end
+
+  prune_database(conn)
 rescue PG::Error => e
   puts e.message
 ensure
