@@ -25,6 +25,10 @@ class Build
     formatted_time queued_at
   end
 
+  def wait_time
+    start_time == 0 ? nil : start_time - queued_at
+  end
+
   private
 
   def formatted_time(t)
@@ -44,7 +48,7 @@ def get_builds
   @builds = []
   begin
     conn = Db::connection
-    rs = conn.exec "SELECT * FROM builds"
+    rs = conn.exec "SELECT * FROM builds ORDER BY queued_at DESC"
     rs.each do |row|
       @builds << Build.new(row)
     end
@@ -71,16 +75,18 @@ __END__
 <table>
   <thead>
     <tr>
+      <th>ID</th>
       <th>Queued</th>
-      <th>Started</th>
+      <th>Wait time</th>
       <th>Duration</th>
     </tr>
   </thead>
   <tbody>
     <% @builds.each do |build| %>
       <tr>
+        <td><%= build.number %></td>
         <td><%= build.queued %></td>
-        <td><%= build.started %></td>
+        <td><%= build.wait_time %></td>
         <td><%= build.duration %></td>
       </tr>
     <% end %>
