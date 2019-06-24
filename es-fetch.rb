@@ -7,7 +7,6 @@ require 'open-uri'
 require 'json'
 require 'time'
 require 'elasticsearch'
-require 'pry-byebug'
 
 # NB: changing 'limit' from 30 to 100 (the max. the API will accept) seems to return a different
 # set of 100 build jobs. In particular, you definitely do not get the most recent 100 jobs,
