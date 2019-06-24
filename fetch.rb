@@ -18,7 +18,7 @@ class Job
 
   def initialize(hash)
     @number = hash.fetch('build_num')
-    @queued_at = to_integer hash.fetch('usage_queued_at')
+    @queued_at = to_integer hash.fetch('queued_at', nil)
     @start_time = to_integer hash.fetch('start_time')
     @build_time_millis = hash.fetch('build_time_millis').to_i
     @vcs_url = hash.fetch('vcs_url')
