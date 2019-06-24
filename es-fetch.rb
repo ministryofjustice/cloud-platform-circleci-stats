@@ -63,7 +63,7 @@ end
 
 ############################################################
 
-es_client = Elasticsearch::Client.new(hosts: [ENV.fetch('ES_CLUSTER')], log: false)
+es_client = Elasticsearch::Client.new(hosts: [ENV.fetch('ES_CLUSTER')], log: true)
 circle_url = CIRCLE_API_URL + '&circle-token=' + ENV.fetch('API_TOKEN')
 index = "circleci-#{Time.now.strftime("%Y%m%d")}"
 
