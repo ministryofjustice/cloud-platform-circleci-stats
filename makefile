@@ -1,4 +1,4 @@
-IMAGE = ministryofjustice/circleci-stats:1.0
+IMAGE = ministryofjustice/circleci-stats:1.1
 
 build:
 	docker build -t $(IMAGE) .

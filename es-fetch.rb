@@ -70,7 +70,7 @@ es_client = Elasticsearch::Client.new(hosts: [ENV.fetch('ES_CLUSTER')], log: tru
 circle_url = CIRCLE_API_URL + '&circle-token=' + ENV.fetch('API_TOKEN')
 index = "circleci-#{Time.now.strftime("%Y%m%d")}"
 
-puts "#{Time.now} Fetching data from #{circle_url}"
+puts "#{Time.now} Fetching data from CircleCI"
 
 jobs = JSON.parse(open(circle_url).read)
 
