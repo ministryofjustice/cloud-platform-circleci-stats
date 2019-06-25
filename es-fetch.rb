@@ -7,7 +7,6 @@ require 'open-uri'
 require 'json'
 require 'time'
 require 'elasticsearch'
-require 'base64'
 
 # NB: changing 'limit' from 30 to 100 (the max. the API will accept) seems to return a different
 # set of 100 build jobs. In particular, you definitely do not get the most recent 100 jobs,
@@ -68,9 +67,7 @@ $stdout.sync = true
 $stderr.sync = true
 
 es_client = Elasticsearch::Client.new(hosts: [ENV.fetch('ES_CLUSTER')], log: true)
-
-token = Base64.decode64(ENV.fetch('API_TOKEN'))
-circle_url = CIRCLE_API_URL + "&circle-token=#{token}"
+circle_url = CIRCLE_API_URL + '&circle-token=' + ENV.fetch('API_TOKEN')
 index = "circleci-#{Time.now.strftime("%Y%m%d")}"
 
 puts "#{Time.now} Fetching data from CircleCI"
