@@ -9,3 +9,10 @@ This data can be used to track how long jobs are waiting to be processed by Circ
 See `makefile` for instructions on building, tagging and pushing a docker image for this project.
 
 See `example.env` for the environment variables that need to be in scope when the container is executed.
+
+## Stats
+
+You can see the stats using the following URL pattern
+
+    https://kibana.cloud-platform.service.justice.gov.uk/circleci-20190904/_search
+
