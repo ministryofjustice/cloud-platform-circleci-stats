@@ -18,6 +18,20 @@ ORG = 'ministryofjustice'
 class Job
   attr_reader :id, :queued_at, :start_time, :build_time_millis, :vcs_url
 
+  def self.create_index_if_not_exists(es_client, index)
+    es_client.indices.get(index: index)
+  rescue Elasticsearch::Transport::Transport::Errors::NotFound
+    es_client.indices.create(index: index)
+    es_client.indices.put_mapping index: index, type: '_doc', body: {
+      _doc: {
+        properties: {
+          queued_at: { type: "date", format: "strict_date_time_no_millis" },
+          start_time: { type: "date", format: "strict_date_time_no_millis" },
+        }
+      }
+    }
+  end
+
   def initialize(hash)
     @vcs_url = hash.fetch('vcs_url')
     @id = build_id(hash)
@@ -69,6 +83,8 @@ $stderr.sync = true
 es_client = Elasticsearch::Client.new(hosts: [ENV.fetch('ES_CLUSTER')], log: true)
 circle_url = CIRCLE_API_URL + '&circle-token=' + ENV.fetch('API_TOKEN')
 index = "circleci-#{Time.now.strftime("%Y%m%d")}"
+
+Job.create_index_if_not_exists(es_client, index)
 
 puts "#{Time.now} Fetching data from CircleCI"
 
