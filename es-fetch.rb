@@ -42,8 +42,8 @@ class Job
 
   def to_hash
     {
-      queued_at: queued_at,
-      start_time: start_time,
+      queued_at: format_time(queued_at),
+      start_time: format_time(start_time),
       duration: duration,
       time_in_queue: time_in_queue,
       project: short_vcs_url
@@ -72,6 +72,10 @@ class Job
 
   def short_vcs_url
     vcs_url.sub("https://github.com/#{ORG}/", '')
+  end
+
+  def format_time(t)
+    t.nil? ? nil : t.strftime("%Y-%m-%dT%H:%M:%SZ")
   end
 end
 
